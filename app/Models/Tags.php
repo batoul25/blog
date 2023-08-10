@@ -12,4 +12,11 @@ class Tags extends Model
         'id',
         'name'
     ];
+    protected $guarded = [];
+
+
+    public function post(){
+        return $this->belongsToMany('App\Models\Post' , 'posts_tags')->withPivot('post_id' , 'tag_id');
+    }
+
 }

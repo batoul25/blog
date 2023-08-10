@@ -13,4 +13,6 @@ class Images extends Model
         'post_id',
         'filename'
     ];
+    protected $guarded = [];
+
 }

@@ -12,4 +12,9 @@ class Categories extends Model
         'id',
         'name'
     ];
+    protected $guarded = [];
+    public function post(){
+        return $this->hasMany('App\Models\Post');
+    }
 }
+
