@@ -17,6 +17,9 @@ class Post extends Model
     ];
     protected $guarded = [];
 
+    public function users(){
+        return $this->belongsTo('App\Models\User');
+    }
     public function tags(){
         return $this->belongsToMany('App\Models\Tags' , 'posts_tags')->withPivot('post_id' , 'tag_id');
     }
