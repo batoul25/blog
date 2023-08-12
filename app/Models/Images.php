@@ -15,4 +15,12 @@ class Images extends Model
     ];
     protected $guarded = [];
 
+    public function setImageAttribute($value){
+        $this->attributes['filename'] = asset($value);
+    }
+
+    public function getImageAttribute($value){
+        return asset($value);
+    }
 }
+

@@ -20,6 +20,11 @@ class Post extends Model
     public function users(){
         return $this->belongsTo('App\Models\User');
     }
+
+    public function categories(){
+        return $this->belongsTo('App\Models\Categories');
+    }
+
     public function tags(){
         return $this->belongsToMany('App\Models\Tags' , 'posts_tags')->withPivot('post_id' , 'tag_id');
     }
@@ -27,4 +32,6 @@ class Post extends Model
     public function images(){
         return $this->hasMany('App\Models\Images');
     }
+
+
 }

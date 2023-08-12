@@ -18,6 +18,7 @@ class TagsFactory extends Factory
     {
         return [
             //
+
         ];
     }
 }

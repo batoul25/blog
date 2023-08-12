@@ -2,12 +2,13 @@
 
 namespace Database\Factories;
 
+use App\Models\Categories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Categories>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Post>
  */
-class CategoriesFactory extends Factory
+class PostFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,6 +20,8 @@ class CategoriesFactory extends Factory
         return [
             //
 
+            'title'=>fake()->sentence,
+            'content'=>fake()->paragraph,
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class PostController extends Controller
 {
@@ -15,6 +16,9 @@ class PostController extends Controller
     public function index()
     {
         //
+
+        $posts= auth()->user()->post()->paginate(5);
+        return view('posts.index',['posts'=>$posts]);
     }
 
     /**
@@ -25,6 +29,7 @@ class PostController extends Controller
     public function create()
     {
         //
+        return view('posts.create');
     }
 
     /**
@@ -36,6 +41,21 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+
+
+        $inputs = \request()->validate([
+           'title'=> 'required | min:8',
+           'image'=> 'mimes:jpeg,png',
+           'category'=>'required',
+           'content'=>'required'
+       ]);
+      if(\request('image')){
+          $inputs['image'] = \request('image')->store('images');
+
+      }
+      auth()->user()->post()->create($inputs);
+        \Illuminate\Support\Facades\Session::flash('post-created-message','Post '.$inputs['title'].' Was Created');
+      return redirect()->route('post.index');
     }
 
     /**
@@ -47,7 +67,8 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
-        return view('blog-post');
+
+        return view('blog-post',['post'=>$post]);
 
 
     }
@@ -61,6 +82,9 @@ class PostController extends Controller
     public function edit(Post $post)
     {
         //
+        $this->authorize('view', $post);
+       return view('posts.edit' , ['post'=>$post]);
+
     }
 
     /**
@@ -73,6 +97,28 @@ class PostController extends Controller
     public function update(Request $request, Post $post)
     {
         //
+        $inputs = \request()->validate([
+            'title'=> 'required | min:8',
+            'filename'=> 'mimes:jpeg,png',
+            'category'=>'required',
+            'content'=>'required'
+        ]);
+
+
+        if(\request('filename')){
+            $inputs['filename'] = \request('image')->store('images');
+            $post->images()->filename = $inputs ['filename'];
+
+        }
+        $post->title = $inputs['title'];
+        $post->categories()->name = $inputs['category'];
+        $post->content = $inputs['content'];
+
+        $this->authorize('update' , $post);
+       $post->update();
+
+        \Illuminate\Support\Facades\Session::flash('post-updated-message','Post '.$inputs['title'].' Was Updated');
+        return redirect()->route('post.index');
     }
 
     /**
@@ -84,5 +130,10 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+        $this->authorize('delete' , $post);
+        $post->delete();
+        \Illuminate\Support\Facades\Session::flash('message' , 'Post Was Deleted');
+        return back();
+
     }
 }
