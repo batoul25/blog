@@ -30,9 +30,16 @@ Route::middleware('auth')->group(function (){
    Route::get('/posts/{post}/edit', [App\Http\Controllers\PostController::class, 'edit'])->name('post.edit');
    Route::patch('/posts/{post}/update', [App\Http\Controllers\PostController::class, 'update'])->name('post.update');
 
+   Route::get('/profile/{user}',[\App\Http\Controllers\UserController::class , 'show'])->name('user.profile.show');
+   Route::patch('/profile/{user}/update',[\App\Http\Controllers\UserController::class , 'update'])->name('user.profile.update');
+
+   Route::delete('/users/{user}/delete',[\App\Http\Controllers\UserController::class , 'destroy'])->name('user.destroy');
 
 
 
 
+});
 
+Route::middleware('role:admin')->group(function (){
+    Route::get('/users',[\App\Http\Controllers\UserController::class , 'index'])->name('user.index');
 });
