@@ -25,7 +25,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 
 });
-
+/*
 Route::get('/post/{post}', [App\Http\Controllers\PostController::class, 'show'])->name('post');
 
 Route::middleware('auth')->group(function (){
@@ -53,3 +53,4 @@ Route::middleware('auth')->group(function (){
 Route::middleware('role:admin')->group(function (){
     Route::get('/users',[\App\Http\Controllers\UserController::class , 'index'])->name('user.index');
 });
+*/

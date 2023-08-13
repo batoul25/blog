@@ -18,7 +18,11 @@ class PostController extends Controller
         //
 
         $posts= auth()->user()->post()->paginate(5);
-        return view('posts.index',['posts'=>$posts]);
+        return response()->json([
+            'status' => 'success',
+            'posts' => $posts,
+        ]);
+
     }
 
     /**
@@ -43,7 +47,7 @@ class PostController extends Controller
         //
 
 
-        $inputs = \request()->validate([
+        $inputs = $request->validate([
            'title'=> 'required | min:8',
            'image'=> 'mimes:jpeg,png',
            'category'=>'required',
@@ -55,7 +59,12 @@ class PostController extends Controller
       }
       auth()->user()->post()->create($inputs);
         \Illuminate\Support\Facades\Session::flash('post-created-message','Post '.$inputs['title'].' Was Created');
-      return redirect()->route('post.index');
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Post Was Created',
+            'posts' => $inputs,
+        ]);
     }
 
     /**
@@ -67,8 +76,13 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
+        $post = Post::findOrFail($post->id);
+        return response()->json([
+            'status' => 'success',
+            'post' => $post,
+        ]);
 
-        return view('blog-post',['post'=>$post]);
+
 
 
     }
@@ -98,14 +112,14 @@ class PostController extends Controller
     {
         //
         $inputs = \request()->validate([
-            'title'=> 'required | min:8',
-            'filename'=> 'mimes:jpeg,png',
-            'category'=>'required',
-            'content'=>'required'
+            'title' => 'required | min:8',
+            'filename' => 'mimes:jpeg,png',
+            'category' => 'required',
+            'content' => 'required'
         ]);
 
 
-        if(\request('filename')){
+        if (\request('filename')) {
             $inputs['filename'] = \request('image')->store('images');
             $post->images()->filename = $inputs ['filename'];
 
@@ -114,11 +128,15 @@ class PostController extends Controller
         $post->categories()->name = $inputs['category'];
         $post->content = $inputs['content'];
 
-        $this->authorize('update' , $post);
-       $post->update();
+        $this->authorize('update', $post);
+        $post->update();
 
-        \Illuminate\Support\Facades\Session::flash('post-updated-message','Post '.$inputs['title'].' Was Updated');
-        return redirect()->route('post.index');
+        \Illuminate\Support\Facades\Session::flash('post-updated-message', 'Post ' . $inputs['title'] . ' Was Updated');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Post updated successfully',
+            'post' => $post,
+        ]);
     }
 
     /**
@@ -133,7 +151,11 @@ class PostController extends Controller
         $this->authorize('delete' , $post);
         $post->delete();
         \Illuminate\Support\Facades\Session::flash('message' , 'Post Was Deleted');
-        return back();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Post deleted successfully',
+            'post' => $post,
+        ]);
 
     }
 }
