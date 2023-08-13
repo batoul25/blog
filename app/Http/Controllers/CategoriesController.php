@@ -15,6 +15,8 @@ class CategoriesController extends Controller
     public function index()
     {
         //
+        $categories = Categories::all();
+        return view('categories.index' , compact('categories'));
     }
 
     /**
@@ -36,6 +38,8 @@ class CategoriesController extends Controller
     public function store(Request $request)
     {
         //
+        Categories::create($request->all());
+        return redirect('/categories');
     }
 
     /**
@@ -58,6 +62,8 @@ class CategoriesController extends Controller
     public function edit(Categories $categories)
     {
         //
+        $category = Categories::findOrFail($categories->id);
+        return view('categories.edit', compact('category'));
     }
 
     /**
@@ -70,6 +76,8 @@ class CategoriesController extends Controller
     public function update(Request $request, Categories $categories)
     {
         //
+        Categories::findOrFail($categories->id)->update($request->all());
+        return redirect('/categories');
     }
 
     /**
@@ -81,5 +89,8 @@ class CategoriesController extends Controller
     public function destroy(Categories $categories)
     {
         //
+    Categories::findOrFail($categories->id)->delete();
+        return redirect('/categories');
+
     }
 }

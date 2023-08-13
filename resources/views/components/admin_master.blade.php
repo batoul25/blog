@@ -64,6 +64,9 @@
         <x-sidebar-users-links>
 
         </x-sidebar-users-links>
+                <x-sidebar-categories-links>
+
+                </x-sidebar-categories-links>
     @endif
         <!-- Nav Item - Utilities Collapse Menu -->
         <li class="nav-item">
