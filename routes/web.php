@@ -25,7 +25,7 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('refresh', 'refresh');
 
 });
-/*
+
 Route::get('/post/{post}', [App\Http\Controllers\PostController::class, 'show'])->name('post');
 
 Route::middleware('auth')->group(function (){
@@ -46,6 +46,10 @@ Route::middleware('auth')->group(function (){
    Route::post('/categories/create' , [\App\Http\Controllers\CategoriesController::class , 'store'])->name('categories.store');
    Route::patch('/categories/{category}/update' , [\App\Http\Controllers\CategoriesController::class , 'update'])->name('categories.update');
 
+   Route::get('/tags' , [\App\Http\Controllers\TagsController::class , 'index'])->name('tags.index');
+   Route::delete('/tags/{tag}/delete' , [\App\Http\Controllers\TagsController::class , 'destroy'])->name('tags.destroy');
+   Route::post('/tags/create' , [\App\Http\Controllers\TagsController::class , 'store'])->name('tags.store');
+   Route::patch('/tags/{tag}/update' , [\App\Http\Controllers\TagsController::class , 'update'])->name('tags.update');
 
 
 });
@@ -53,4 +57,4 @@ Route::middleware('auth')->group(function (){
 Route::middleware('role:admin')->group(function (){
     Route::get('/users',[\App\Http\Controllers\UserController::class , 'index'])->name('user.index');
 });
-*/
+
